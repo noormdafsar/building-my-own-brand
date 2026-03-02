@@ -1,0 +1,289 @@
+2. The Mission
+Create a full-stack MERN application that:
+Allows Admin to create and manage products
+
+
+Manages inventory and tracks sales
+
+
+Allows Users to browse and purchase products
+
+
+Integrates Stripe (Test Mode) for payments
+
+
+Is deployed live
+
+
+Reflects your own branding and design thinking
+
+
+You are free to choose:
+The type of product (digital goods, clothing, gadgets, art, etc.)
+
+
+Brand name
+
+
+Design language
+
+
+Theme and identity
+
+
+This is your startup.
+
+3. Core Requirements
+
+3.1 Authentication & Roles
+Implement secure authentication using JWT.
+Roles:
+Admin
+
+
+User
+
+
+Required Features:
+Admin
+Add product
+
+
+Edit product
+
+
+Delete product
+
+
+Manage inventory
+
+
+View sales analytics (basic total sales + total revenue)
+
+
+User
+Register / Login
+
+
+View product list
+
+
+View individual product page
+
+
+Purchase product via Stripe (Test Mode)
+
+
+View order history
+
+3.2 Product Management
+
+Each product must include:
+Title
+
+
+Description
+
+
+Price
+
+
+Category
+
+
+Stock Quantity
+
+
+Product Image
+
+
+CreatedAt / UpdatedAt
+
+
+Product Capabilities:
+Pagination
+
+
+Search by title
+
+
+Filter by category
+
+
+Sort by price
+
+
+Real-time stock deduction after purchase
+
+
+Filtering & sorting must be handled at the database query level, not frontend-only.
+
+3.3 Inventory & Sales System
+You must implement:
+Stock reduction after successful payment
+
+
+Prevent purchase if stock is 0
+
+
+Sales tracking
+
+
+Total revenue calculation
+
+
+Admin view to monitor sales
+
+
+Bonus (optional but appreciated):
+Low stock indicator
+
+
+Basic dashboard stats
+
+
+3.4 Stripe Integration (Required)
+You must integrate:
+Stripe in Test Mode
+
+
+Secure checkout flow
+
+
+Payment confirmation handling
+
+
+Webhook or post-payment verification logic
+
+
+Stripe test card must work correctly.
+Improper or fake payment logic = automatic rejection.
+
+
+3.5 Frontend (React)
+Must include:
+Landing page
+
+
+Product listing page
+
+
+Individual product page
+
+
+Authentication pages
+
+
+Admin dashboard
+
+
+Clean routing structure
+
+
+Requirements:
+Functional components
+
+
+React Hooks
+
+
+Clean folder structure
+
+
+Proper state management (Context API or Redux)
+
+
+API integration using Axios or Fetch
+
+
+No pre-built admin templates.
+You are free to use UI libraries - but your design thinking matters.
+
+
+
+
+
+
+4. Branding & Design Freedom
+You have complete creative freedom.
+Choose:
+Your brand name
+
+
+Logo (simple is fine)
+
+
+Theme colors
+
+
+Typography
+
+
+Visual direction
+
+
+Important: UI/UX is part of evaluation.
+A functional but poorly designed experience will score lower.
+We are evaluating:
+Layout clarity
+
+
+Responsiveness
+
+
+Accessibility basics
+
+
+Usability
+
+
+Visual consistency
+
+
+
+
+
+
+
+
+5. Technical Expectations
+Backend
+Clean folder structure
+
+
+Proper middleware usage
+
+
+Schema validation
+
+
+Indexing where appropriate
+
+
+Secure environment variable handling
+
+
+Input validation
+
+
+Proper error handling
+
+
+Security
+You must implement at least one of:
+Rate limiting
+
+
+Helmet
+
+
+Input sanitization
+
+
+Proper CORS configuration
+
+
+Secure password hashing
+
+
+Explain your choice in documentation.
