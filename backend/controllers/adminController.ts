@@ -1,10 +1,8 @@
 import { Request, Response } from 'express';
-import { Admin } from '../models/admin';
+import { User } from '../models/user.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { JWT_SECRET_KEY } from '../environment/environment';
 
 export const signup = async (req: Request, res: Response) => {
     try {
@@ -16,13 +14,13 @@ export const signup = async (req: Request, res: Response) => {
             })
         }
 
-        const existingAdmin = await Admin.findOne({ email });
+        const existingAdmin = await User.findOne({ email });
         if (existingAdmin) {
             return res.status(400).json({ success: false, message: 'Admin already exists' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const admin = new Admin({
+        const admin = new User({
             email,
             password: hashedPassword
         });
@@ -41,17 +39,17 @@ export const signup = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
-        const admin = await Admin.findOne({ email });
+        const admin = await User.findOne({ email });
         if (!admin) {
             return res.status(400).json({ success: false, message: 'Invalid credentials' });
         }
 
-        const isMatch = await bcrypt.compare(password, admin.password);
+        const isMatch = await bcrypt.compare(password, admin.password || '');
         if (!isMatch) {
             return res.status(400).json({ success: false, message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: admin._id, role: 'admin' }, process.env.JWT_SECRET || 'secret-key', { expiresIn: '1d' });
+        const token = jwt.sign({ id: admin._id, role: 'admin' }, JWT_SECRET_KEY, { expiresIn: '1d' });
 
         res.status(200).json({
             success: true,
