@@ -1,24 +1,47 @@
-import { Request, Response } from 'express';
-import { Product } from "../models/product.model";
-import { asyncHandler } from "../utils/asyncHandler";
+import { Request, Response } from "express";
+import Product from "../models/product.model";
 
-export const getProducts = asyncHandler(async (req: Request, res: Response) => {
-  const { page = 1, limit = 10, search, category, sort } = req.query;
+export const createProduct = async (req: Request, res: Response) => {
+  const product = await Product.create(req.body);
+  res.status(201).json(product);
+};
 
-  const query: any = {};
+export const getProducts = async (req: Request, res: Response) => {
+  const { keyword, category, minPrice, maxPrice } = req.query;
 
-  if (search) {
-    query.$text = { $search: search };
+  let query: any = {};
+
+  if (keyword) {
+    query.name = { $regex: keyword, $options: "i" };
   }
 
   if (category) {
     query.category = category;
   }
 
-  const products = await Product.find(query)
-    .sort(sort ? { price: sort === "asc" ? 1 : -1 } : {})
-    .skip((+page - 1) * +limit)
-    .limit(+limit);
+  if (minPrice && maxPrice) {
+    query.price = { $gte: Number(minPrice), $lte: Number(maxPrice) };
+  }
 
-  res.json({ success: true, products });
-});
+  const products = await Product.find(query);
+  res.json(products);
+};
+
+export const getSingleProduct = async (req: Request, res: Response) => {
+  const product = await Product.findById(req.params.id);
+  res.json(product);
+};
+
+export const updateProduct = async (req: Request, res: Response) => {
+  const product = await Product.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+  res.json(product);
+};
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  await Product.findByIdAndDelete(req.params.id);
+  res.json({ message: "Product deleted" });
+};

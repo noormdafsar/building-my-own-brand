@@ -1,36 +1,22 @@
-import { createContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, useState } from "react";
 
-interface User {
-  id: string;
-  role: "admin" | "user";
-}
+export const AuthContext = createContext<any>(null);
 
-interface AuthContextType {
-  user: User | null;
-  login: (token: string) => void;
-  logout: () => void;
-}
+export const AuthProvider = ({ children }: any) => {
+  const [user, setUser] = useState<any>(
+    JSON.parse(localStorage.getItem("user") || "null")
+  );
 
-export const AuthContext = createContext<AuthContextType | null>(null);
-
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-
-  const login = (token: string) => {
-    localStorage.setItem("token", token);
-    const decoded: any = JSON.parse(atob(token.split(".")[1]));
-    setUser({ id: decoded.id, role: decoded.role });
+  const login = (data: any) => {
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    setUser(data.user);
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     setUser(null);
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) login(token);
-  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

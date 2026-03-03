@@ -1,27 +1,20 @@
 import { useEffect, useState } from "react";
-import { api } from "../api/axios";
+import { getProducts } from "../api/product.api";
 import ProductCard from "../components/product/ProductCard";
+import { Product } from "../types/product.types";
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetchProducts();
+    getProducts().then(res => setProducts(res.data));
   }, []);
 
-  const fetchProducts = async () => {
-    const res = await api.get("/products?page=1&limit=10");
-    setProducts(res.data.products);
-  };
-
   return (
-    <div>
-      <h1>All Products</h1>
-      <div className="grid">
-        {products.map((p: any) => (
-          <ProductCard key={p._id} product={p} />
-        ))}
-      </div>
+    <div className="grid grid-cols-4 gap-4 p-6">
+      {products.map(p => (
+        <ProductCard key={p._id} product={p} />
+      ))}
     </div>
   );
 };

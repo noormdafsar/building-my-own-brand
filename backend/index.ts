@@ -1,11 +1,16 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import dns from 'dns';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
-import adminRouter from './routers/adminRouter';
+import authRoutes from './routers/auth.routes';
 import { PORT, MONGO_URI } from './environment/environment';
 import { connectDB } from './db_config/db';
+import productRoutes from "./routers/product.routes";
+
+// Force Node.js to use a public DNS server to resolve SRV record issues
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 dotenv.config();
 
@@ -17,7 +22,8 @@ app.use(cors()); // CORS configuration
 app.use(express.json());
 
 // Routes
-app.use('/api/v1/admin', adminRouter);
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 
 const startServer = async () => {
   await connectDB(MONGO_URI);

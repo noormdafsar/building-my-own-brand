@@ -1,10 +1,10 @@
-export interface IProduct {
+export interface Product {
   _id: string;
-  title: string;
+  name: string;
   description: string;
   price: number;
+  image: string;
   category: string;
   stock: number;
-  image: string;
-  createdAt: string;
+  rating: number;
 }

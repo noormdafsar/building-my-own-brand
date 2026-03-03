@@ -1,33 +1,28 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { api } from "../api/axios";
+import { useParams } from "react-router-dom";
+import { getProduct } from "../api/product.api";
+import { Product } from "../types/product.types";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    api.get(`/products/${id}`).then((res) => setProduct(res.data.product));
+    if (id) {
+      getProduct(id).then(res => setProduct(res.data));
+    }
   }, [id]);
 
-  const handleCheckout = async () => {
-    const res = await api.post("/orders/checkout", {
-      productId: id,
-      quantity: 1,
-    });
-
-    window.location.href = res.data.url;
-  };
-
-  if (!product) return <p>Loading...</p>;
+  if (!product) return <div>Loading...</div>;
 
   return (
-    <div>
-      <h1>{product.title}</h1>
-      <p>${product.price}</p>
-      <button disabled={product.stock === 0} onClick={handleCheckout}>
-        {product.stock === 0 ? "Out of Stock" : "Buy Now"}
-      </button>
+    <div className="p-10 flex gap-10">
+      <img src={product.image} className="w-96" />
+      <div>
+        <h1 className="text-3xl font-bold">{product.name}</h1>
+        <p className="mt-3">{product.description}</p>
+        <p className="text-xl mt-3">₹ {product.price}</p>
+      </div>
     </div>
   );
 };

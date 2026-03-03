@@ -1,16 +1,7 @@
-import { api } from "./axios";
+import API from "./axios";
 
-export const getProducts = (params: any) =>
-  api.get("/products", { params });
+export const getProducts = (params?: any) =>
+  API.get("/products", { params });
 
-export const getProductById = (id: string) =>
-  api.get(`/products/${id}`);
-
-export const createProduct = (data: any) =>
-  api.post("/products", data);
-
-export const updateProduct = (id: string, data: any) =>
-  api.put(`/products/${id}`, data);
-
-export const deleteProduct = (id: string) =>
-  api.delete(`/products/${id}`);
+export const getProduct = (id: string) =>
+  API.get(`/products/${id}`);

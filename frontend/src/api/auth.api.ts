@@ -1,7 +1,7 @@
-import { api } from "./axios";
-
-export const registerUser = (data: any) =>
-  api.post("/auth/register", data);
+import API from "./axios";
 
 export const loginUser = (data: any) =>
-  api.post("/auth/login", data);
+  API.post("/auth/login", data);
+
+export const registerUser = (data: any) =>
+  API.post("/auth/register", data);
