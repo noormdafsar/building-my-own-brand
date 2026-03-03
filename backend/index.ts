@@ -19,8 +19,11 @@ app.use(express.json());
 // Routes
 app.use('/api/v1/admin', adminRouter);
 
-connectDB(MONGO_URI);
+const startServer = async () => {
+  await connectDB(MONGO_URI);
+  app.listen(PORT, () =>
+    console.log(`Server running on port ${PORT}`)
+  );
+};
 
-app.listen(PORT, () =>
-  console.log(`Server running on port ${PORT}`)
-);
+startServer();
