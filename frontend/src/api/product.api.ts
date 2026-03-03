@@ -5,3 +5,6 @@ export const getProducts = (params?: any) =>
 
 export const getProduct = (id: string) =>
   API.get(`/products/${id}`);
+
+export const deleteProduct = (id: string) => 
+  API.delete(`/delete/${id}`);

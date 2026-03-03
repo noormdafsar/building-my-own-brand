@@ -1,33 +1,44 @@
 import { Request, Response } from "express";
-import { stripe } from "../db_config/stripe";
-import { Product } from "../models/product.model";
-import { ApiError } from "../utils/ApiError";
-import { asyncHandler } from "../utils/asyncHandler";
+import Order from "../models/order.model";
+import Stripe from "stripe";
+import { STRIPE_SECRET_KEY } from "../environment/environment";
 
-export const createCheckoutSession = asyncHandler(async (req: Request, res: Response) => {
-  const { productId, quantity } = req.body;
+const stripe = new Stripe(STRIPE_SECRET_KEY, {
+  apiVersion: "2026-02-25.clover"
+});
 
-  const product = await Product.findById(productId);
-  if (!product || (product.stock || 0) < quantity) {
-    throw new ApiError(400, "Product unavailable");
-  }
+export const createCheckoutSession = async (
+  req: any,
+  res: Response
+) => {
+  const { cart } = req.body;
+
+  const line_items = cart.map((item: any) => ({
+    price_data: {
+      currency: "inr",
+      product_data: { name: item.name },
+      unit_amount: item.price * 100
+    },
+    quantity: item.quantity
+  }));
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
+    line_items,
     mode: "payment",
-    line_items: [
-      {
-        price_data: {
-          currency: "usd",
-          product_data: { name: product.title || "Product" },
-          unit_amount: (product.price || 0) * 100,
-        },
-        quantity,
-      },
-    ],
-    success_url: `${process.env.CLIENT_URL}/success`,
-    cancel_url: `${process.env.CLIENT_URL}/cancel`,
+    success_url: "http://localhost:5173/success",
+    cancel_url: "http://localhost:5173/cancel"
   });
 
-  res.json({ url: session.url });
-});
+  await Order.create({
+    user: req.user.id,
+    items: cart,
+    totalAmount: cart.reduce(
+      (acc: number, item: any) =>
+        acc + item.price * item.quantity,
+      0
+    )
+  });
+
+  res.json({ id: session.id });
+};

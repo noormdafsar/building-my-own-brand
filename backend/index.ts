@@ -8,6 +8,7 @@ import authRoutes from './routers/auth.routes';
 import { PORT, MONGO_URI } from './environment/environment';
 import { connectDB } from './db_config/db';
 import productRoutes from "./routers/product.routes";
+import orderRoutes from "./routers/order.routes";
 
 // Force Node.js to use a public DNS server to resolve SRV record issues
 dns.setServers(['8.8.8.8', '8.8.4.4']);
@@ -24,6 +25,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes);
 
 const startServer = async () => {
   await connectDB(MONGO_URI);

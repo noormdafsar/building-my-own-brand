@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { api } from "../../api/axios";
+import API from "../../api/axios";
 
 const Dashboard = () => {
   const [stats, setStats] = useState<any>(null);
 
   useEffect(() => {
-    api.get("/admin/analytics").then((res) => setStats(res.data));
+    API.get("/admin/analytics").then((res) => setStats(res.data));
   }, []);
 
   if (!stats) return <p>Loading...</p>;

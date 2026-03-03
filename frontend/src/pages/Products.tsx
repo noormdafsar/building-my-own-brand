@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "../api/product.api";
 import ProductCard from "../components/product/ProductCard";
-import { Product } from "../types/product.types";
+import type { Product } from "../types/product.types";
 
 const Products = () => {
   const [products, setProducts] = useState<Product[]>([]);

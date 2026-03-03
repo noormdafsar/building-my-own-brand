@@ -1,10 +1,10 @@
-import { api } from "./axios";
+import API from "./axios";
 
 export const createCheckoutSession = (data: any) =>
-  api.post("/orders/checkout", data);
+  API.post("/orders/checkout", data);
 
 export const getOrders = () =>
-  api.get("/orders");
+  API.get("/orders");
 
 export const getAnalytics = () =>
-  api.get("/admin/analytics");
+  API.get("/admin/analytics");

@@ -6,13 +6,15 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Dashboard from "../pages/admin/Dashboard";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
+import Cart from "../pages/Cart"
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
-      <Route path="/" element={<Products />} />
+      <Route path="/product" element={<Products />} />
       <Route path="/product/:id" element={<ProductDetails />} />
+      <Route path="/cart" element={<Cart />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
